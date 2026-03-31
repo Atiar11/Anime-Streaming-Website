@@ -1,4 +1,6 @@
+# Anime Streaming Website
 
+![Site Preview](./preview.png)
 
 Some Features:
 
