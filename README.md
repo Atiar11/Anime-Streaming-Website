@@ -1,5 +1,5 @@
 # Anime Streaming Website
-![Site Preview](preview.png)
+![Site Preview](preview.gif)
 
 A professional, high-fidelity anime streaming and social platform featuring a cinematic user interface, personalized content organization, and real-time community interactions.
 
