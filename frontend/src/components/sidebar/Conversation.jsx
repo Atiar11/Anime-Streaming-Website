@@ -18,7 +18,7 @@ const Conversation = ({ conversation, lastIdx, emoji }) => {
 			>
 				<div className={`avatar ${isOnline ? "online" : ""}`}>
 					<div className='w-12 rounded-full'>
-						<img src={conversation.profilePic} alt='user avatar' />
+						<img src={conversation.profilePic?.includes("avatar.iran.liara.run") ? `https://api.dicebear.com/7.x/adventurer/svg?seed=${conversation.username}` : conversation.profilePic} alt='user avatar' />
 					</div>
 				</div>
 

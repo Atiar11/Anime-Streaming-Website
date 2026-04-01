@@ -6,7 +6,7 @@ const useAdmin = (authUser) => {
   useEffect(() => {
     const username = authUser?.username;
     if (username) {
-      fetch(`http://localhost:5000/api/auth/admin-verify/${username}`, {
+      fetch(`/api/auth/admin-verify/${username}`, {
         method: "GET",
         headers: {
           "content-type": "application/json",

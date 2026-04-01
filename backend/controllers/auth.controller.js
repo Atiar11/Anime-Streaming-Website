@@ -1,11 +1,34 @@
 import bcrypt from "bcryptjs";
+import mongoose from "mongoose";
 import User from "../models/user.model.js";
 import generateTokenAndSetCookie from "../utils/generateToken.js";
+import { mockUsersState } from "../utils/mockState.js";
 
 export const signup = async (req, res) => {
   try {
     const { fullName, username, password, confirmPassword, gender, role } =
       req.body;
+
+    // --- MOCK MODE FALLBACK ---
+    if (mongoose.connection.readyState !== 1) {
+      console.log("Database not connected. Using Mock Mode for signup.");
+      const existingUser = mockUsersState.find(u => u.username === username);
+      if (existingUser) {
+        return res.status(400).json({ error: "Username already exists" });
+      }
+
+      const mockUser = {
+        _id: `mock-${username}-id`,
+        fullName: fullName || "Mock User",
+        username: username,
+        profilePic: `https://api.dicebear.com/7.x/adventurer/svg?seed=${username}`,
+        role: role || "user",
+      };
+      mockUsersState.push(mockUser);
+      generateTokenAndSetCookie(mockUser._id, res);
+      return res.status(201).json(mockUser);
+    }
+    // --- END MOCK MODE ---
 
     if (password !== confirmPassword) {
       return res.status(400).json({ error: "Passwords don't match" });
@@ -21,10 +44,9 @@ export const signup = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // https://avatar-placeholder.iran.liara.run/
-
-    const boyProfilePic = `https://avatar.iran.liara.run/public/boy?username=${username}`;
-    const girlProfilePic = `https://avatar.iran.liara.run/public/girl?username=${username}`;
+    // https://api.dicebear.com/
+    const boyProfilePic = `https://api.dicebear.com/7.x/adventurer/svg?seed=${username}`;
+    const girlProfilePic = `https://api.dicebear.com/7.x/adventurer/svg?seed=${username}`;
 
     const newUser = new User({
       fullName,
@@ -59,6 +81,31 @@ export const signup = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { username, password } = req.body;
+
+    // --- MOCK MODE FALLBACK ---
+    if (mongoose.connection.readyState !== 1) {
+      console.log("Database not connected. Using Mock Mode for login.");
+      if (username && password) {
+        let mockUser = mockUsersState.find(u => u.username === username);
+        if (!mockUser) {
+          const isMockAdmin = username.toLowerCase() === "admin" || username.toLowerCase().includes("admin");
+          mockUser = {
+            _id: isMockAdmin ? "mock-admin-id" : `mock-${username}-id`,
+            fullName: isMockAdmin ? "Mock Admin" : "Mock User",
+            username: username,
+            profilePic: `https://api.dicebear.com/7.x/adventurer/svg?seed=${username}`,
+            role: isMockAdmin ? "admin" : "user",
+          };
+          mockUsersState.push(mockUser);
+        }
+        generateTokenAndSetCookie(mockUser._id, res);
+        return res.status(200).json(mockUser);
+      } else {
+        return res.status(400).json({ error: "Invalid credentials. Please enter any username and password." });
+      }
+    }
+    // --- END MOCK MODE ---
+
     const user = await User.findOne({ username });
     const isPasswordCorrect = await bcrypt.compare(
       password,
@@ -97,6 +144,19 @@ export const logout = (req, res) => {
 export const adminVerifyController = async (req, res) => {
   try {
     const username = req.params.username;
+
+    // --- MOCK MODE FALLBACK ---
+    if (mongoose.connection.readyState !== 1) {
+      console.log("Database not connected. Using Mock Mode for admin verification.");
+      const mockUser = mockUsersState.find(u => u.username === username);
+      if (mockUser) {
+        return res.status(200).json({ admin: mockUser.role === "admin" });
+      }
+      const isMockAdmin = username?.toLowerCase() === "admin" || username?.toLowerCase().includes("admin");
+      return res.status(200).json({ admin: isMockAdmin });
+    }
+    // --- END MOCK MODE ---
+
     const user = await User.findOne({ username });
     const isAdmin = user?.role === "admin";
     res.status(200).json({

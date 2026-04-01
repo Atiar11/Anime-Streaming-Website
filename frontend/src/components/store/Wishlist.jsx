@@ -11,7 +11,7 @@ const Wishlist = () => {
     const getWishlistItems = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/store/wishlist/${authUser?._id}`
+          `/store/wishlist/${authUser?._id}`
         );
         const data = await response.json();
         console.log("data: ", data);

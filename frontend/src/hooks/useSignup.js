@@ -18,6 +18,10 @@ const useSignup = () => {
 				body: JSON.stringify({ fullName, username, password, confirmPassword, gender }),
 			});
 
+			if (!res.ok) {
+				throw new Error(`Server Error: ${res.status} ${res.statusText}`);
+			}
+
 			const data = await res.json();
 			if (data.error) {
 				throw new Error(data.error);

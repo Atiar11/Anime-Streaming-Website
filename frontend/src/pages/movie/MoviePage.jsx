@@ -60,126 +60,146 @@ const MoviePage = () => {
   );
 
   return (
-    <section className="min-h-full">
-      <h1 className="text-3xl text-bold text-center text-white py-8">
-        Anime Movies!!
-      </h1>
+    <section className="min-h-full pb-20">
+      <div className="text-center py-12">
+        <h1 className="inline-block text-5xl font-orbitron font-bold crimson-glow-text text-white relative">
+          ANIME ARCHIVE
+          <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-transparent via-crimson-glow to-transparent animate-pulse"></div>
+        </h1>
+        <p className="mt-4 font-inter text-gray-500 uppercase tracking-widest text-xs">Exposing the pinnacle of Japanese Animation</p>
+      </div>
 
-      <div className="flex justify-center mb-4">
+      <div className="flex flex-wrap justify-center gap-4 mb-12">
         <button
           onClick={handleTogglePopular}
-          className={`flex items-center px-4 py-2 bg-blue-500 text-white rounded-md focus:outline-none hover:bg-blue-600 mr-2 ${
-            showPopular ? 'bg-blue-600' : ''
+          className={`font-orbitron text-xs px-6 py-3 border-2 transition-all duration-300 ${
+            showPopular 
+              ? 'bg-crimson-glow border-crimson-glow text-white shadow-crimson-outer' 
+              : 'bg-transparent border-blood-red text-blood-red hover:bg-blood-red hover:text-white'
           }`}
         >
-          <span className="mr-1">Popular</span>
-          {showPopular && <span role="img" aria-label="fire">🔥</span>}
+          {showPopular ? 'POPULARITY PEAK 🔥' : 'SHOW POPULAR'}
         </button>
-        <input
-          type="text"
-          placeholder="Search Anime..."
-          value={searchQuery}
-          onChange={handleSearchChange}
-          className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-400 mr-2"
-          style={{ width: "300px" }}
-        />
+        
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="FILTER BY TITLE..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+            className="bg-dark-charcoal/80 border-2 border-blood-red/40 px-6 py-3 font-orbitron text-xs text-white focus:outline-none focus:border-crimson-glow w-64 md:w-80 transition-colors"
+          />
+        </div>
+
         <button
           onClick={() => setSearchQuery("")}
-          className="px-4 py-2 bg-blue-500 text-white rounded-md focus:outline-none hover:bg-blue-600"
+          className="font-orbitron text-xs px-6 py-3 border-2 border-gray-700 text-gray-500 hover:border-white hover:text-white transition-all"
         >
-          Clear
-        </button>
-        <button
-          onClick={() => console.log("Search")}
-          className="px-4 py-2 bg-blue-500 text-white rounded-md focus:outline-none ml-2 hover:bg-blue-600"
-        >
-          Search
+          RESET
         </button>
       </div>
 
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-10 gap-1 w-full">
         {filteredAnimeList.map((anime) => (
           <div
             key={anime.mal_id}
-            className="flex flex-col items-center justify-center w-full max-w-sm mx-auto mt-4"
+            className="group relative bg-deep-black border border-blood-red/20 overflow-hidden hover:border-crimson-glow/60 transition-all duration-500 hover:-translate-y-2 hover:shadow-crimson-outer"
           >
             <div
-              className="w-full h-64 bg-gray-300 bg-center bg-cover rounded-lg shadow-md"
+              className="w-full aspect-[2/3] bg-center bg-cover transition-transform duration-700 group-hover:scale-110"
               style={{ backgroundImage: `url(${anime?.images?.jpg?.image_url})` }}
-            ></div>
+            >
+              <div className="absolute inset-0 bg-gradient-to-t from-deep-black via-transparent to-transparent opacity-80"></div>
+            </div>
 
-            <div className="w-56 -mt-10 overflow-hidden bg-white rounded-lg shadow-lg md:w-64">
-              <h3 className="py-2 font-bold tracking-wide text-center text-gray-800 uppercase">
+            <div className="absolute bottom-0 left-0 w-full p-6 translate-y-8 group-hover:translate-y-0 transition-transform duration-300">
+              <h3 className="font-orbitron font-bold text-white text-lg leading-tight mb-4 crimson-glow-text shadow-black">
                 {anime.title}
               </h3>
 
-              <div className="flex items-center justify-center px-3 py-2 bg-gray-200">
-                <button
-                  onClick={() => handleOpenModal(anime)}
-                  className="px-2 py-1 text-xs font-semibold text-white uppercase transition-colors duration-300 transform bg-red-800 rounded hover:bg-red-700 focus:bg-gray-700 focus:outline-none"
-                >
-                  Watch Trailer
-                </button>
-              </div>
+              <button
+                onClick={() => handleOpenModal(anime)}
+                className="w-full py-3 bg-blood-red text-white font-orbitron text-[10px] tracking-widest hover:bg-crimson-glow transition-colors"
+              >
+                ACCESS TRAILER
+              </button>
             </div>
           </div>
         ))}
       </div>
 
-      <dialog id="modalBtn" className="modal">
-        <div className="modal-box bg-white text-black">
+      <dialog id="modalBtn" className="modal backdrop-blur-sm">
+        <div className="modal-box max-w-4xl bg-dark-charcoal border-2 border-crimson-glow p-0 rounded-none overflow-hidden">
           <button
             onClick={handleCloseModal}
-            className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+            className="absolute right-4 top-4 z-10 text-white hover:text-crimson-glow transition-colors font-bold text-2xl"
           >
             ✕
           </button>
+          
           {selectedAnime && (
-            <>
-              <h3 className="font-bold text-lg text-red-600">
-                {selectedAnime.title}
-              </h3>
-              <div className="py-10">
-                <iframe
-                  title={selectedAnime.title}
-                  width="450"
-                  height="280"
-                  src={selectedAnime?.trailer?.embed_url}
-                  allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
+            <div className="flex flex-col lg:flex-row h-full">
+              <div className="lg:w-2/3 bg-black">
+                <div className="aspect-video w-full h-full flex items-center justify-center">
+                  <iframe
+                    title={selectedAnime.title}
+                    width="100%"
+                    height="100%"
+                    src={selectedAnime?.trailer?.embed_url}
+                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="border-none"
+                  ></iframe>
+                </div>
               </div>
-              <div className="space-y-2">
-                <p>
-                  <span className="font-bold">Type: </span>
-                  {selectedAnime.type}
-                </p>
-                <p>
-                  <span className="font-bold">Episodes: </span>
-                  {selectedAnime.episodes}
-                </p>
-                <p>
-                  <span className="font-bold">Duration: </span>
-                  {selectedAnime.duration}
-                </p>
-                <p>
-                  <span className="font-bold">Score: </span>
-                  {selectedAnime.score}
-                </p>
-                <p>
-                  <span className="font-bold">Cast: </span>
-                  {cast.map((character) => (
-                    <span key={character.character_id}>{character.character.name}, </span>
-                  ))}
-                </p>
-                <p>
-                  <span className="font-bold">Synopsis: </span>
-                  {selectedAnime.synopsis}
-                </p>
+              
+              <div className="lg:w-1/3 p-8 bg-gradient-to-br from-dark-charcoal to-black overflow-y-auto max-h-[70vh] lg:max-h-[600px]">
+                <h3 className="font-orbitron font-bold text-2xl text-crimson-glow mb-6 leading-tight">
+                  {selectedAnime.title}
+                </h3>
+                
+                <div className="space-y-4 font-inter text-sm text-gray-400">
+                  <div className="border-l-2 border-blood-red pl-4">
+                    <p className="text-[10px] uppercase tracking-widest text-blood-red font-bold">Category</p>
+                    <p className="text-white italic">{selectedAnime.type}</p>
+                  </div>
+                  
+                  <div className="flex gap-4">
+                    <div className="flex-1 border-l-2 border-blood-red pl-4">
+                      <p className="text-[10px] uppercase tracking-widest text-blood-red font-bold">Episodes</p>
+                      <p className="text-white">{selectedAnime.episodes || '??'}</p>
+                    </div>
+                    <div className="flex-1 border-l-2 border-blood-red pl-4">
+                      <p className="text-[10px] uppercase tracking-widest text-blood-red font-bold">Rating</p>
+                      <p className="text-white">{selectedAnime.score}</p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <p className="text-[10px] uppercase tracking-widest text-blood-red font-bold mb-2">Cast Overview</p>
+                    <div className="flex flex-wrap gap-2">
+                       {cast.slice(0, 5).map((character) => (
+                        <span key={character.character.mal_id} className="text-[10px] bg-blood-red/20 text-gray-300 px-2 py-1 rounded-none border border-blood-red/40">
+                          {character.character.name}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <p className="text-[10px] uppercase tracking-widest text-blood-red font-bold mb-2">Data Summary</p>
+                    <p className="text-xs leading-relaxed text-gray-500 line-clamp-6">
+                      {selectedAnime.synopsis}
+                    </p>
+                  </div>
+                </div>
               </div>
-            </>
+            </div>
           )}
         </div>
+        <form method="dialog" className="modal-backdrop">
+          <button onClick={handleCloseModal}>close</button>
+        </form>
       </dialog>
     </section>
   );

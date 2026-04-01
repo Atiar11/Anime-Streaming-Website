@@ -14,49 +14,70 @@ const Login = () => {
 	};
 
 	return (
-		<div className='flex flex-col items-center justify-center min-w-96 mx-auto'>
-			<div className='w-full p-6 rounded-lg shadow-md bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0'>
-				<h1 className='text-3xl font-semibold text-center text-gray-300'>
-					Login
-					<span className='text-red-500 font-mono'></span>
-				</h1>
+		<div className='relative flex flex-col items-center justify-center min-h-screen px-4 overflow-hidden'>
+			{/* Anime Art Background */}
+			<div 
+				className='absolute inset-0 z-0'
+				style={{ backgroundImage: `url(/login_bg.png)`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}
+			>
+				{/* Dark overlay so card pops */}
+				<div className='absolute inset-0' style={{ background: 'rgba(0,0,0,0.55)' }}></div>
+			</div>
 
-				<form onSubmit={handleSubmit}>
-					<div>
-						<label className='label p-2'>
-							<span className='text-base label-text'>Username</span>
+			<div className='w-full max-w-md p-10 glass-morphism border-t-4 border-crimson-glow relative z-10 overflow-hidden group shadow-2xl'>
+				{/* Background Glow Element */}
+				<div className='absolute -right-10 -top-10 w-40 h-40 bg-crimson-glow opacity-10 rounded-full blur-3xl group-hover:opacity-20 transition-opacity'></div>
+
+				<div className='text-center mb-10'>
+					<h1 className='text-4xl font-orbitron font-bold text-white mb-2 tracking-[0.2em] crimson-glow-text'>
+						LOGIN
+					</h1>
+					<p className='text-[10px] font-inter text-blood-red uppercase tracking-widest font-bold'>Authorized Access Only</p>
+				</div>
+
+				<form onSubmit={handleSubmit} className='space-y-8'>
+					<div className='relative group/input'>
+						<label className='block text-xs font-orbitron text-gray-500 mb-2 uppercase tracking-tight group-focus-within/input:text-crimson-glow transition-colors'>
+							Codename / Username
 						</label>
 						<input
 							type='text'
-							placeholder='Enter username'
-							className='w-full input input-bordered h-10'
+							placeholder='IDENTIFY YOURSELF'
+							className='w-full bg-deep-black/40 border-b-2 border-blood-red/30 py-3 text-white font-orbitron text-sm focus:outline-none focus:border-crimson-glow transition-all placeholder:text-gray-700'
 							value={username}
 							onChange={(e) => setUsername(e.target.value)}
 						/>
 					</div>
 
-					<div>
-						<label className='label'>
-							<span className='text-base label-text'>Password</span>
+					<div className='relative group/input'>
+						<label className='block text-xs font-orbitron text-gray-500 mb-2 uppercase tracking-tight group-focus-within/input:text-crimson-glow transition-colors'>
+							Access Protocol / Password
 						</label>
 						<input
 							type='password'
-							placeholder='Enter Password'
-							className='w-full input input-bordered h-10'
+							placeholder='DECRYPT KEY'
+							className='w-full bg-deep-black/40 border-b-2 border-blood-red/30 py-3 text-white font-orbitron text-sm focus:outline-none focus:border-crimson-glow transition-all placeholder:text-gray-700'
 							value={password}
 							onChange={(e) => setPassword(e.target.value)}
 						/>
 					</div>
-					<Link to='/signup' className='text-sm  hover:underline hover:text-blue-600 mt-2 inline-block'>
-						{"Don't"} have an account?
-					</Link>
 
-					<div>
-						<button className='btn btn-block btn-sm mt-2' disabled={loading}>
-							{loading ? <span className='loading loading-spinner '></span> : "Login"}
+					<div className='flex flex-col gap-4 mt-10'>
+						<button 
+							className='w-full py-4 bg-blood-red text-white font-orbitron text-xs tracking-[0.3em] font-bold hover:bg-crimson-glow hover:shadow-crimson-outer transition-all duration-300 disabled:opacity-50'
+							disabled={loading}
+						>
+							{loading ? <span className='loading loading-spinner'></span> : "INITIALIZE SESSION"}
 						</button>
+
+						<Link to='/signup' className='text-[10px] font-orbitron text-gray-500 hover:text-white text-center transition-colors uppercase tracking-widest'>
+							Need Credentials? <span className='text-blood-red font-bold underline ml-1'>Register</span>
+						</Link>
 					</div>
 				</form>
+				
+				{/* Decorative corner element */}
+				<div className='absolute bottom-0 right-0 w-8 h-8 border-r-2 border-b-2 border-crimson-glow/30'></div>
 			</div>
 		</div>
 	);

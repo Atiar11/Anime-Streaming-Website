@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 import User from "../models/user.model.js";
 
 const protectRoute = async (req, res, next) => {
@@ -14,6 +15,21 @@ const protectRoute = async (req, res, next) => {
 		if (!decoded) {
 			return res.status(401).json({ error: "Unauthorized - Invalid Token" });
 		}
+
+		// --- MOCK MODE FALLBACK ---
+		if (mongoose.connection.readyState !== 1) {
+			console.log("Database not connected. Using Mock Mode in protectRoute.");
+			if (decoded.userId.startsWith("mock-")) {
+				req.user = {
+					_id: decoded.userId,
+					username: decoded.userId === "mock-admin-id" ? "admin" : "user",
+					fullName: decoded.userId === "mock-admin-id" ? "Mock Admin" : "Mock User",
+					role: decoded.userId === "mock-admin-id" ? "admin" : "user",
+				};
+				return next();
+			}
+		}
+		// --- END MOCK MODE ---
 
 		const user = await User.findById(decoded.userId).select("-password");
 

@@ -1,7 +1,7 @@
 # Anime Streaming Website
 <img width="1918" height="881" alt="image" src="https://github.com/user-attachments/assets/031de8fe-39ca-469d-9b8a-cf1aa9f966e5" />
 
-![Site Preview](./preview.png)
+![Site Preview](preview.gif)
 
 Some Features:
 

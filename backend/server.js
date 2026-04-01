@@ -12,6 +12,8 @@ import { app, server } from "./socket/socket.js";
 const PORT = process.env.PORT || 5000;
 
 // connect database
+const maskedURI = process.env.MONGO_DB_URI ? process.env.MONGO_DB_URI.replace(/:([^@]+)@/, ":****@") : "MISSING";
+console.log("Connecting to MongoDB with URI: " + maskedURI);
 connectToMongoDB();
 
 app.use(express.json()); // to parse the incoming requests with JSON payloads (from req.body)

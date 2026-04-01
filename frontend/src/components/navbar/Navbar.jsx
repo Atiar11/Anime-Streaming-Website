@@ -10,78 +10,56 @@ const Navbar = () => {
   const [admin] = useAdmin(authUser); // useAdmin hook
 
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar glass-morphism sticky top-0 z-50 px-6 py-3 border-b-2 border-blood-red/30">
       <div className="flex-1">
-        <a className="btn btn-ghost text-3xl font-mono text-red-500">
-          <Link to="/">ANIME 471!!</Link>
-        </a>
+        <Link to="/" className="text-3xl font-orbitron font-bold text-white hover:text-crimson-glow transition-all duration-300 crimson-glow-text">
+          ANIME 471!!
+        </Link>
       </div>
-      <div className="flex-none gap-2">
-        <div>
-          <a className="btn btn-ghost text-xl font-mono">
-            <Link to="/store">Store</Link>
-          </a>
-        </div>
-        <div>
-          <a className="btn btn-ghost text-xl font-mono">
-            <Link to="/store/cart">Cart</Link>
-          </a>
-        </div>
-        <div>
-          <a className="btn btn-ghost text-xl font-mono">
-            <Link to="/store/wishlist">Wishlist</Link>
-          </a>
+      <div className="flex-none gap-6 items-center">
+        <div className="hidden md:flex gap-4">
+          <Link to="/store" className="font-orbitron text-sm text-gray-300 hover:text-crimson-glow transition-colors">Store</Link>
+          <Link to="/store/cart" className="font-orbitron text-sm text-gray-300 hover:text-crimson-glow transition-colors">Cart</Link>
+          <Link to="/store/wishlist" className="font-orbitron text-sm text-gray-300 hover:text-crimson-glow transition-colors">Wishlist</Link>
+          {admin && (
+            <Link to="/dashboard" className="font-orbitron text-sm text-crimson-glow hover:text-white transition-colors">Dashboard</Link>
+          )}
         </div>
 
-        {/* if logged user admin then able to access Dashboard */}
-        {admin && (
-          <div>
-            <a className="btn btn-ghost text-xl font-mono">
-              <Link to="/dashboard">Dashboard</Link>
-            </a>
-          </div>
-        )}
-
-        <div className="form-control">
+        <div className="relative group">
           <input
             type="text"
-            placeholder="Search"
-            className="input input-bordered w-24 md:w-auto"
+            placeholder="SEARCH ANIME..."
+            className="bg-deep-black/60 border border-blood-red/50 text-xs font-orbitron px-4 py-2 rounded-none focus:outline-none focus:border-crimson-glow transition-all w-32 md:w-48 placeholder:text-gray-600"
           />
+          <div className="absolute bottom-0 left-0 w-0 h-[1px] bg-crimson-glow transition-all duration-300 group-hover:w-full"></div>
         </div>
+
         <div className="dropdown dropdown-end">
           <div
             tabIndex={0}
             role="button"
-            className="btn btn-ghost btn-circle avatar"
+            className="p-0.5 rounded-full border-2 border-blood-red hover:border-crimson-glow transition-all animate-glow-pulse"
           >
-            <div className="w-10 rounded-full">
+            <div className="w-10 h-10 rounded-full overflow-hidden">
               <img
-                alt="Tailwind CSS Navbar component"
-                src={authUser.profilePic}
+                alt="User Profile"
+                src={authUser.profilePic?.includes("avatar.iran.liara.run") ? `https://api.dicebear.com/7.x/adventurer/svg?seed=${authUser.username}` : authUser.profilePic}
+                className="object-cover w-full h-full"
               />
             </div>
           </div>
           <ul
             tabIndex={0}
-            className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
+            className="mt-4 z-[1] p-3 shadow-2xl menu menu-sm dropdown-content bg-dark-charcoal border border-blood-red/30 rounded-none w-56 font-inter"
           >
-            <li>
-              <a className="justify-between">
-                Profile
-                <span className="badge">New</span>
-              </a>
+            <li className="mb-2 pb-2 border-b border-blood-red/20">
+              <p className="text-crimson-glow font-orbitron text-[10px] tracking-widest uppercase">Logged in as</p>
+              <span className="text-white font-bold">{authUser.fullName}</span>
             </li>
-            <li>
-              <Link to="/chat">Chat</Link>
-            </li>
-            <li>
-              <Link to="/store">Store</Link>
-            </li>
-            <li>
-              <Link to="/store/cart">Cart</Link>
-            </li>
-            <li>
+            <li><Link to="/chat" className="hover:text-crimson-glow transition-colors py-2">MESSAGES</Link></li>
+            <li><Link to="/store" className="hover:text-crimson-glow transition-colors py-2">BROWSE STORE</Link></li>
+            <li className="mt-2 pt-2 border-t border-blood-red/20">
               <LogoutButton />
             </li>
           </ul>

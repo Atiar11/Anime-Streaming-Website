@@ -26,7 +26,7 @@ function App() {
   return (
     <div>
       {authUser && <Navbar />}
-      <div className="p-4 h-screen flex items-center justify-center ">
+      <div className="min-h-screen">
         <Routes>
           <Route
             path="/"
@@ -62,6 +62,7 @@ function App() {
             element={authUser ? <Dashboard /> : <Navigate to={"/login"} />}
           />
           <Route path='/pages/cart/orderinfo' element={authUser ? <OrderInfo /> : <Navigate to={"/login"} />} />
+          <Route path='*' element={<Navigate to="/" />} />
         </Routes>
         <Toaster />
       </div>

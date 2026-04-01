@@ -7,8 +7,8 @@ const productSchema = new Schema({
     name: { type: String, required: true },
     description: { type: String, required: true },
     price: { type: Number, required: true },
-    imageUrl: { type: String, default: ''},
-    // Add other fields as needed
+    imageURL: { type: String, default: ''},
+    category: { type: String, required: true, default: 'Miscellaneous' },
 },
 { timestamps: true });
 
