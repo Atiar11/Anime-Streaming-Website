@@ -1,13 +1,23 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../context/AuthContext";
 import useAdmin from "../../hooks/useAdmin";
 import LogoutButton from "../sidebar/LogoutButton";
+import useSearchStore from "../../zustand/useSearchStore";
 
 const Navbar = () => {
   const { authUser } = useAuthContext();
+  const navigate = useNavigate();
+  const { searchQuery, setSearchQuery } = useSearchStore();
 
   const [admin] = useAdmin(authUser); // useAdmin hook
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate("/"); // Navigate to Home page to show results
+    }
+  };
 
   return (
     <div className="navbar glass-morphism sticky top-0 z-50 px-6 py-3 border-b-2 border-blood-red/30">
@@ -26,14 +36,16 @@ const Navbar = () => {
           )}
         </div>
 
-        <div className="relative group">
+        <form onSubmit={handleSearch} className="relative group">
           <input
             type="text"
             placeholder="SEARCH ANIME..."
             className="bg-deep-black/60 border border-blood-red/50 text-xs font-orbitron px-4 py-2 rounded-none focus:outline-none focus:border-crimson-glow transition-all w-32 md:w-48 placeholder:text-gray-600"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
           <div className="absolute bottom-0 left-0 w-0 h-[1px] bg-crimson-glow transition-all duration-300 group-hover:w-full"></div>
-        </div>
+        </form>
 
         <div className="dropdown dropdown-end">
           <div

@@ -7,6 +7,7 @@ import authRoutes from "./routes/auth.routes.js";
 import messageRoutes from "./routes/message.routes.js";
 import storeRoutes from "./routes/store.routes.js";
 import userRoutes from "./routes/user.routes.js";
+import watchlistAnimeRoutes from "./routes/watchlistAnime.routes.js";
 import { app, server } from "./socket/socket.js";
 
 const PORT = process.env.PORT || 5000;
@@ -23,6 +24,7 @@ app.use(cookieParser());
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/watchlist", watchlistAnimeRoutes);
 app.use("/store", storeRoutes);
 
 server.listen(PORT, () => {

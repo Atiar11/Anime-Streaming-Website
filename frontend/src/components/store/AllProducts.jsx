@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Product from './Product';
 import { useCart } from '../../context/cartContext';
+import useSearchStore from '../../zustand/useSearchStore';
 
 
 function AllProducts() {
@@ -51,17 +52,17 @@ function AllProducts() {
 
   };
 
-  const [searchTerm, setSearchTerm] = useState('');
+  const { searchQuery, setSearchQuery } = useSearchStore();
   const [selectedCategory, setSelectedCategory] = useState('All');
 
   const categories = ['All', ...new Set(products.map(p => p.category || 'Miscellaneous'))];
 
   const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
+    setSearchQuery(event.target.value);
   }
 
   const filteredProducts = products.filter(product => {
-    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory || (!product.category && selectedCategory === 'Miscellaneous');
     return matchesSearch && matchesCategory;
   });
@@ -106,7 +107,7 @@ function AllProducts() {
                 className='w-full bg-deep-black/60 border-2 border-blood-red/40 px-6 py-3 font-orbitron text-xs text-white focus:outline-none focus:border-crimson-glow transition-all placeholder:text-gray-600'
                 type="text"
                 placeholder="SEARCH INVENTORY..."
-                value={searchTerm}
+                value={searchQuery}
                 onChange={handleSearch}
                 />
                 <div className='absolute bottom-0 left-0 w-0 h-[2px] bg-crimson-glow transition-all duration-300 group-hover:w-full'></div>

@@ -11,7 +11,7 @@
 }
 
 body {
-  background: linear-gradient(rgba(0, 0, 0, 0.99), rgba(0, 0, 0, 0.99)), url("file:///C:/Users/atiar/.gemini/antigravity/brain/5c23cf9f-7490-44c0-90ab-c61a7aa0025b/aggressive_anime_bg_1774932615775.png");
+  background: #050505;
   background-attachment: fixed;
   background-size: cover;
   background-position: center;
@@ -19,6 +19,23 @@ body {
   font-family: 'Inter', sans-serif;
   overflow-x: hidden;
 }
+
+/* Hide scrollbar for horizontal shelves while keeping scroll functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 
 h1, h2, h3, .font-orbitron {
   font-family: 'Orbitron', sans-serif;
